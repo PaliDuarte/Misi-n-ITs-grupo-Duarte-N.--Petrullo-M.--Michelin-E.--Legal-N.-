@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Misión ESI</title>
+<style>
+:root{--bg:#f4f1ff;--card:#fff;--ink:#231f3a;--mut:#6a6585;--pri:#6c4cf1;--ok:#1f9d63;--okbg:#e3f7ec;--bad:#d6453d;--badbg:#fde9e7;--bd:#ddd6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17142b;--card:#231f3f;--ink:#f1eeff;--mut:#b2acd4;--pri:#9c85ff;--ok:#4fd69a;--okbg:#17372b;--bad:#ff7d74;--badbg:#401f1d;--bd:#3b3665;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17142b;--card:#231f3f;--ink:#f1eeff;--mut:#b2acd4;--pri:#9c85ff;--ok:#4fd69a;--okbg:#17372b;--bad:#ff7d74;--badbg:#401f1d;--bd:#3b3665;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+#app{max-width:640px;margin:0 auto;padding:18px}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:20px;padding:22px;animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:28px;line-height:1.15;margin:.2em 0}
+h2{font-size:21px;margin:.5em 0}
+.big{font-size:56px;text-align:center}
+.mut{color:var(--mut)}
+.hud{display:flex;justify-content:space-between;margin-bottom:12px;font-weight:700}
+.bar{height:10px;background:var(--bd);border-radius:9px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:var(--pri);transition:width .4s}
+button{font:inherit;cursor:pointer}
+.opt,.chip{display:block;width:100%;text-align:left;margin:10px 0;padding:14px 16px;border-radius:14px;border:2px solid var(--bd);background:var(--card);color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--pri)}
+.opt:disabled{opacity:.55;cursor:not-allowed}
+.chip.on{border-color:var(--ok);background:var(--okbg)}
+.go{display:block;width:100%;margin-top:14px;padding:14px;border:0;border-radius:14px;background:var(--pri);color:#fff;font-weight:700;font-size:18px}
+.fb{margin-top:12px;padding:14px;border-radius:14px;animation:pop .25s ease}
+.fb.ok{background:var(--okbg);border:2px solid var(--ok)}
+.fb.no{background:var(--badbg);border:2px solid var(--bad)}
+.row{display:flex;gap:10px}.row .opt{text-align:center;font-weight:700}
+.tag{display:inline-block;padding:3px 12px;border-radius:99px;background:var(--bd);font-size:14px;font-weight:700}
+.stars{font-size:32px;text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var I=[
+{x:"🩺 Cuidar el cuerpo y la salud",t:"El misterio de las llagas",e:"🔍",q:"Una persona nota una llaguita que no duele en la zona genital. A las tres semanas desaparece sola, sin ningún remedio. ¿Qué pasó realmente?",
+o:[["Es la primera etapa de la sífilis. La llaga se va sola, pero la bacteria sigue en el cuerpo y hay que tomar penicilina.",1],["La infección se curó sola porque el cuerpo eliminó la bacteria.",0]],
+bad:"¡Cuidado! La sífilis la produce una bacteria. Que la llaga desaparezca NO significa que esté curada: la bacteria queda escondida y, con los años, puede causar problemas graves. Se confirma con un análisis de sangre y se trata con penicilina.",
+good:"¡Correcto! La llaga se va, pero la bacteria no. Con un análisis de sangre se confirma, y se trata con penicilina."},
+{x:"🩺 Cuidar el cuerpo y la salud",t:"El escudo protector",e:"🛡️",q:"Un grupo de estudiantes pregunta cómo cuidarse del VPH, de la hepatitis B y de otras ITS. Sirve para cualquier persona, sin importar su género ni con quién tenga relaciones. ¿Cuál es la respuesta correcta?",
+o:[["Usar preservativo (o campo de látex) en todas las prácticas sexuales y tener las vacunas de VPH y hepatitis B.",1],["Las pastillas anticonceptivas o el DIU protegen de todas las ITS.",0]],
+bad:"Las pastillas y el DIU evitan embarazos, pero NO protegen de las ITS. El preservativo es el método que ayuda a prevenirlas. Para el sexo oral se usa un campo de látex. Además, las vacunas de VPH y hepatitis B protegen de virus que pueden causar daños graves, como cáncer de cuello de útero.",
+good:"¡Muy bien! Preservativo + vacunas es el combo de protección. Las vacunas son gratuitas y están en el calendario oficial."},
+{x:"🩺 Cuidar el cuerpo y la salud",t:"El tiempo de espera",e:"🧪",q:"Lu tuvo una relación sin preservativo hace 5 días. Hoy se hizo un test rápido de VIH y le dio negativo. ¿Qué tiene que hacer ahora?",
+o:[["Esperar unas semanas y repetir el test. Si se hace muy pronto, el test todavía no puede detectar el virus.",1],["No hacer nada más: el negativo confirma que no tiene VIH.",0]],
+bad:"¡Atención! Después de la exposición, el cuerpo tarda entre 3 y 4 semanas (o más) en fabricar las defensas que el test detecta. Ese tiempo de espera se llama “período ventana”. En ese lapso el test puede dar negativo aunque el virus esté, y se puede transmitir. Por eso hay que repetirlo.",
+good:"¡Exacto! Hay que esperar y repetir el test. Es gratuito, confidencial y voluntario."},
+{x:"💜 Valorar los afectos",t:"El sí y el no",e:"🚦",q:"Mica y Nico se gustan y se besaron en una fiesta. Después Nico quiere avanzar más, pero Mica dice: “No sé… mejor no”. ¿Qué corresponde hacer?",
+o:[["Parar y respetar. Mica puede cambiar de idea en cualquier momento.",1],["Insistir un poquito: ya se besaron, así que seguro quiere.",0],["Seguir, porque no dijo un “no” bien fuerte.",0]],
+bad:"Un “no sé” o un silencio NO es un sí. El consentimiento es decir que sí con ganas, sin presión ni miedo. Se puede cambiar de idea en cualquier momento, aunque antes se hayan besado. Y vale para cualquier pareja, de cualquier género.",
+good:"¡Eso es respeto! Solo cuenta un sí libre y con ganas. Y si vos querés frenar, también tenés derecho a hacerlo."},
+{x:"🌈 Respetar la diversidad",t:"Cuidarse es para todas las personas",e:"🏳️‍🌈",q:"Tomi y Gonza son dos chicos que van a tener relaciones. Tomi dice: “No hace falta preservativo, porque no hay riesgo de embarazo”. ¿Qué respuesta es correcta?",
+o:[["El preservativo también protege de las ITS, y las ITS pueden pasar en cualquier relación, sin importar el género.",1],["Tiene razón: el preservativo solo sirve para evitar embarazos.",0],["Entre dos chicos no hay riesgo de ITS.",0]],
+bad:"El preservativo no es solo para evitar embarazos: es el método que ayuda a prevenir las ITS. Cualquier persona que tenga relaciones sexuales puede tener o transmitir una ITS, sin importar su género ni a quién le gusta.",
+good:"¡Muy bien! Cuidarse es para todas las personas, en cualquier tipo de relación."},
+{x:"⚖️ Ejercer nuestros derechos",t:"¿Qué le pasa a Leo?",e:"🩺",q:"Leo siente ardor al hacer pis y nota una secreción rara. Un amigo le dice: “Tomá unos antibióticos que me sobraron y listo”. ¿Qué es lo mejor que puede hacer?",
+o:[["Ir al centro de salud para que le hagan estudios y le indiquen el tratamiento. Y avisarles a sus parejas sexuales para que también se controlen.",1],["Tomar los antibióticos del amigo: seguro es lo mismo.",0],["Esperar a ver si se le pasa solo.",0]],
+bad:"Tomar remedios sin control médico puede tapar los síntomas sin eliminar la infección. Cada ITS necesita un estudio y un tratamiento propio. Aunque los síntomas se pasen, la infección puede seguir y transmitirse. Lo mejor es consultar y avisar a las parejas sexuales.",
+good:"¡Correcto! Consultar a tiempo es lo mejor para cuidarse y cuidar a las demás personas. Es gratis y confidencial."},
+{x:"⚖️ Ejercer nuestros derechos",t:"Tu derecho a la salud",e:"🏥",q:"Luz tiene 14 años. Quiere informarse sobre cómo cuidarse, pero le da vergüenza ir con su familia. ¿Puede ir sola al centro de salud?",
+o:[["Sí. Desde los 13 años puede consultar sola, y la atención es gratuita y confidencial.",1],["No: hasta los 18 siempre necesita ir con una persona adulta.",0],["Sí, pero primero el centro tiene que avisarle a su familia.",0]],
+bad:"Tenés derecho a recibir información y atención con confidencialidad. Desde los 13 años podés consultar sola y pedir preservativos y métodos anticonceptivos. Si tenés menos de 13, podés ir con alguien de confianza.",
+good:"¡Correcto! Es un derecho: atención gratuita, confidencial y sin juicios. Y la ESI también es un derecho: la ley 26.150 dice que todas y todos los estudiantes tienen que recibirla."},
+{m:1,q:"Si no tengo síntomas, no tengo ninguna ITS.",v:0,g:"Mito. Muchas ITS no dan síntomas. Por eso los controles son importantes."},
+{m:1,q:"Las ITS solo las tienen algunas personas.",v:0,g:"Mito. Cualquier persona que tenga relaciones sexuales puede tener una ITS, sin importar su género ni a quién le gusta. Lo que importa es cuidarse."},
+{m:1,q:"Si me vacuné contra el VPH, ya no necesito preservativo.",v:0,g:"Mito. La vacuna protege de algunos tipos de VPH, pero no de otras ITS. El preservativo sigue siendo importante."},
+{m:1,q:"Las ITS solo se transmiten con penetración.",v:0,g:"Mito. Algunas ITS también se transmiten por sexo oral o por el contacto de la piel y las mucosas."},
+{m:1,q:"Las pastillas anticonceptivas protegen de las ITS.",v:0,g:"Mito. Evitan embarazos, pero no protegen de las ITS."},
+{m:1,q:"El test de VIH es gratuito y confidencial.",v:1,g:"Verdad. Podés hacértelo en centros de salud y hospitales públicos."}
+];
+var C=["Voy a usar preservativo en todas mis relaciones","Me voy a vacunar contra el VPH y la hepatitis B","Me voy a hacer los controles y el test de VIH cuando haga falta","Me voy a informar en fuentes confiables y no voy a creer en mitos"];
+var app=document.getElementById("app"),S;
+function shuffle(a){return a.map(function(x){return[Math.random(),x]}).sort(function(a,b){return a[0]-b[0]}).map(function(x){return x[1]})}
+function hud(){return '<div class="hud"><span>⭐ '+S.pts+' puntos</span><span>🏅 '+S.st+' estrellas</span></div><div class="bar"><i style="width:'+S.i/I.length*100+'%"></i></div>'}
+function intro(){S={i:0,pts:0,st:0,tries:0};
+app.innerHTML='<div class="card"><div class="big">🕵️‍♀️</div><h1>Misión ESI</h1><p class="mut"><b>Cuidarnos, respetarnos y conocer nuestros derechos</b></p><p>La Educación Sexual Integral (ESI) es un derecho de todas y todos los estudiantes (ley 26.150). En esta misión vas a pasar por 7 estaciones y un nivel bonus.</p><p>💡 Si te equivocás, recibís una pista y volvés a intentar. Cuantas más veces aciertes a la primera, más puntos ganás.</p><button class="go" onclick="render()">¡Empezar la misión!</button></div>'}
+function render(){var it=I[S.i];S.tries=0;
+if(it.m){app.innerHTML=hud()+'<div class="card"><span class="tag">Bonus · 🎯 ¿Mito o verdad?</span><h2>“'+it.q+'”</h2><div class="row"><button class="opt" onclick="mv(0)">🚫 Mito</button><button class="opt" onclick="mv(1)">✅ Verdad</button></div><div id="fb"></div></div>';return}
+app.innerHTML=hud()+'<div class="card"><span class="tag">Estación '+(S.i+1)+' · '+it.e+' '+it.t+'</span><h2>'+it.q+'</h2><div id="ops"></div><div id="fb"></div></div>';
+shuffle(it.o).forEach(function(o){var b=document.createElement("button");b.className="opt";b.textContent=o[0];b.onclick=function(){ans(b,o[1])};document.getElementById("ops").appendChild(b)})}
+function ans(b,ok){var it=I[S.i],fb=document.getElementById("fb");
+if(!ok){S.tries++;b.disabled=true;fb.innerHTML='<div class="fb no"><b>💡 Pista:</b> '+it.bad+'</div>';return}
+var p=S.tries==0?100:S.tries==1?50:25;S.pts+=p;S.st+=S.tries==0?3:S.tries==1?2:1;
+document.querySelectorAll(".opt").forEach(function(x){x.disabled=true});b.style.borderColor="var(--ok)";
+fb.innerHTML='<div class="fb ok"><b>✅ +'+p+' puntos</b><br>'+it.good+'</div><button class="go" onclick="adv()">Seguir →</button>'}
+function mv(v){var it=I[S.i],ok=v==it.v;if(ok){S.pts+=50;S.st+=1}
+document.querySelectorAll(".opt").forEach(function(x){x.disabled=true});
+document.getElementById("fb").innerHTML='<div class="fb '+(ok?'ok':'no')+'"><b>'+(ok?'✅ +50 puntos':'❌ Casi')+'</b><br>'+it.g+'</div><button class="go" onclick="adv()">Seguir →</button>'}
+function adv(){S.i++;if(S.i<I.length)render();else finish()}
+function finish(){var mx=I.reduce(function(a,x){return a+(x.m?50:100)},0),r=S.pts/mx,md=r>.85?["🥇","Agente de oro"]:r>.55?["🥈","Agente de plata"]:["🥉","Agente en entrenamiento"];
+app.innerHTML='<div class="bar"><i style="width:100%"></i></div><div class="card"><div class="big">'+md[0]+'</div><h1 style="text-align:center">¡Misión cumplida!</h1><p style="text-align:center;font-weight:700">'+md[1]+'</p><div class="stars">'+S.st+' ⭐</div><p style="text-align:center"><b>'+S.pts+' de '+mx+' puntos</b></p><h2>🤝 Elegí tus compromisos</h2><div id="cs"></div><div class="fb ok"><b>🏥 Dónde cuidarte (gratis)</b><br>En centros de salud y hospitales públicos podés hacerte el test de VIH y de sífilis, pedir preservativos, vacunarte contra el VPH y la hepatitis B, y consultar con confidencialidad.</div><button class="go" onclick="intro()">Jugar de nuevo 🔄</button></div>';
+C.forEach(function(c){var b=document.createElement("button");b.className="chip";b.textContent=c;b.onclick=function(){b.classList.toggle("on")};document.getElementById("cs").appendChild(b)})}
+intro();
+</script>
+</body>
+</html>
