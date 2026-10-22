@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Misión ESI - ITs</title>
+<title>Misión ESI - ITS</title>
 <style>
 :root{--bg:#f4f1ff;--card:#fff;--ink:#231f3a;--mut:#6a6585;--pri:#6c4cf1;--ok:#1f9d63;--okbg:#e3f7ec;--bad:#d6453d;--badbg:#fde9e7;--bd:#ddd6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17142b;--card:#231f3f;--ink:#f1eeff;--mut:#b2acd4;--pri:#9c85ff;--ok:#4fd69a;--okbg:#17372b;--bad:#ff7d74;--badbg:#401f1d;--bd:#3b3665;color-scheme:dark}}
@@ -79,7 +79,7 @@ var app=document.getElementById("app"),S;
 function shuffle(a){return a.map(function(x){return[Math.random(),x]}).sort(function(a,b){return a[0]-b[0]}).map(function(x){return x[1]})}
 function hud(){return '<div class="hud"><span>⭐ '+S.pts+' puntos</span><span>🏅 '+S.st+' estrellas</span></div><div class="bar"><i style="width:'+S.i/I.length*100+'%"></i></div>'}
 function intro(){S={i:0,pts:0,st:0,tries:0};
-app.innerHTML='<div class="card"><div class="big">🕵️‍♀️</div><h1>Misión ESI</h1><p class="mut"><b>Cuidarnos, respetarnos y conocer nuestros derechos</b></p><p>La Educación Sexual Integral (ESI) es un derecho de todas y todos los estudiantes (ley 26.150). En esta misión vas a pasar por 7 estaciones y un nivel bonus.</p><p>💡 Si te equivocás, recibís una pista y volvés a intentar. Cuantas más veces aciertes a la primera, más puntos ganás.</p><button class="go" onclick="render()">¡Empezar la misión!</button></div>'}
+app.innerHTML='<div class="card"><div class="big">🕵️‍♀️</div><h1>Misión ESI - ITS</h1><p class="mut"><b>Cuidarnos, respetarnos y conocer nuestros derechos</b></p><p>La Educación Sexual Integral (ESI) es un derecho de todas y todos los estudiantes (ley 26.150). En esta misión vas a pasar por 7 estaciones y un nivel bonus.</p><p>💡 Si te equivocás, recibís una pista y volvés a intentar. Cuantas más veces aciertes a la primera, más puntos ganás.</p><button class="go" onclick="render()">¡Empezar la misión!</button></div>'}
 function render(){var it=I[S.i];S.tries=0;
 if(it.m){app.innerHTML=hud()+'<div class="card"><span class="tag">Bonus · 🎯 ¿Mito o verdad?</span><h2>“'+it.q+'”</h2><div class="row"><button class="opt" onclick="mv(0)">🚫 Mito</button><button class="opt" onclick="mv(1)">✅ Verdad</button></div><div id="fb"></div></div>';return}
 app.innerHTML=hud()+'<div class="card"><span class="tag">Estación '+(S.i+1)+' · '+it.e+' '+it.t+'</span><h2>'+it.q+'</h2><div id="ops"></div><div id="fb"></div></div>';
